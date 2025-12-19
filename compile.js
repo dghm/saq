@@ -120,7 +120,9 @@ function compileStylusRecursive(dir, outputBaseDir) {
                 reject(err);
               } else {
                 fs.writeFileSync(outputPath, css);
-                console.log(`  ✅ 已生成 ${path.relative(DIST_DIR, outputPath)}`);
+                console.log(
+                  `  ✅ 已生成 ${path.relative(DIST_DIR, outputPath)}`
+                );
                 resolve();
               }
             });
@@ -140,12 +142,14 @@ if (fs.existsSync(STYLE_DIR)) {
     console.log('🎨 編譯 Stylus 樣式...');
     const stylePromises = compileStylusRecursive(STYLE_DIR, DIST_CSS_DIR);
     if (stylePromises.length > 0) {
-      Promise.all(stylePromises).then(() => {
-        copyAssets();
-      }).catch((error) => {
-        console.error('❌ Stylus 編譯失敗:', error.message);
-        process.exit(1);
-      });
+      Promise.all(stylePromises)
+        .then(() => {
+          copyAssets();
+        })
+        .catch((error) => {
+          console.error('❌ Stylus 編譯失敗:', error.message);
+          process.exit(1);
+        });
     } else {
       copyAssets();
     }
@@ -176,4 +180,3 @@ function copyAssets() {
 
   console.log('✨ 編譯完成！');
 }
-
