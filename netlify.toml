@@ -1,0 +1,27 @@
+# Netlify Configuration for TailorMed SAQ
+
+[build]
+  # 建置命令 - 編譯 Pug 和 Stylus
+  command = "npm install && npm run build"
+  
+  # 發布目錄（相對於 repository root）
+  publish = "dist"
+
+# Node.js 版本
+[build.environment]
+  NODE_VERSION = "18"
+
+# 重定向規則
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 安全標頭
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
