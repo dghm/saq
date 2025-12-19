@@ -1,0 +1,54 @@
+doctype html
+html(lang="zh-TW")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Supplier Audit Questionnaire (SAQ) | TailorMed
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap", rel="stylesheet")
+    link(rel="stylesheet", href="./css/main.css")
+    script(src="./js/app.js", defer)
+  body
+    header.site-header
+      .container
+        .brand
+          img.brand-logo(src="./images/logo.png", alt="TailorMed")
+          img.brand-logo.brand-logo--mobile(src="./images/TM-Logo-Square.png", alt="TailorMed")
+        a.header-btn(href="https://www.tailormed-intl.com") Back Home
+
+    section.hero-banner
+      .hero-overlay
+      .container
+        .hero-content
+          .hero-text
+            h1.hero-title Supplier Audit Questionnaire
+            p.hero-subtitle.hero-subtitle--desktop Complete the supplier audit questionnaire to help us better understand your capabilities and ensure quality standards.
+            p.hero-subtitle.hero-subtitle--mobile Complete the supplier audit questionnaire to help us better understand your capabilities and ensure quality standards.
+
+    section.hero-summary
+      //- SAQ Form Panel
+      include components/saqForm.pug
+
+      section.system-description
+        .container
+          .description-content
+            h3.description-title Supplier Audit Questionnaire Notice｜Quality Assurance
+              
+            .description-text-section
+              p.description-text
+                | This questionnaire system is provided by TailorMed for supplier evaluation and quality assurance purposes. All information submitted will be kept confidential and used solely for audit and assessment purposes.
+                
+              p.description-text
+                | To protect the integrity and confidentiality of your data, all submissions are access-controlled and transmitted securely. Questionnaire responses are stored securely on our authorized data platforms.
+               
+              p.description-text
+                | For questions or urgent inquiries, please contact your TailorMed coordinator directly. Contact us at 
+                strong +8862-2694-6168 
+                | or email 
+                strong customer-service@tailormed-intl.com
+                | . TailorMed is committed to maintaining high quality standards and professional supplier relationships.
+    footer.site-footer
+      .container
+        p.site-footer__copy © 2025 TailorMed. All Rights Reserved.
+

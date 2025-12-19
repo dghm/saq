@@ -1,0 +1,537 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title TailorMed Tracking System
+    style.
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #efefef;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .logo {
+        display: block;
+        max-width: 200px;
+        height: auto;
+        margin: 0 auto 30px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #d28c00;
+      }
+      button {
+        background-color: #333;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #111;
+      }
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      .result {
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 5px;
+        display: none;
+      }
+      .result.success {
+        background-color: #cfcfcf; 
+        color: #333;
+      }
+      .result.error {
+        background-color: #cfcfcf;
+        border: 1px solid #afafaf;
+        color: #393939;
+      }
+      .result.loading {
+        background-color: #efefef;
+        border: 1px solid #bfbfbf;
+        color: #999;
+      }
+      .shipment-info {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 15px 0;
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .info-row:last-child {
+        border-bottom: none;
+      }
+      .info-label {
+        font-weight: 600;
+        color: #495057;
+      }
+      .info-value {
+        color: #6c757d;
+      }
+      .timeline {
+        margin-top: 20px;
+      }
+      .timeline-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        background: #f8f9fa;
+      }
+      .timeline-item.pending {
+        background: #f0f0f0;
+        opacity: 0.7;
+      }
+      .timeline-step {
+        background: #ccc;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-weight: bold;
+      }
+      .timeline-step.completed {
+        background: #333;
+        color: white;
+      }
+      .timeline-step.completed.order-completed {
+        background: #000 !important;
+        color: #fff !important;
+      }
+      .timeline-item.order-completed .timeline-title {
+        color: #333 !important;
+      }
+      .timeline-item.order-completed .timeline-time {
+        color: #333 !important;
+      }
+      .timeline-item.order-completed {
+        opacity: 1 !important;
+      }
+      .timeline-step.active {
+        background: #d28c00;
+        color: #fff;
+      }
+      .timeline-step.pending {
+        background: #ccc;
+        color: #fff;
+      }
+      .timeline-step.processing {
+        background: #bb2749;
+        color: #fff;
+      }
+      .timeline-step.accent {
+        background: #ccc;
+        color: #fff;
+      }
+      .timeline-item.pending {
+        opacity: 0.6;
+      }
+      .timeline-item.processing {
+        opacity: 1;
+      }
+      .timeline-content {
+        flex: 1;
+      }
+      .timeline-title {
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .timeline-item.pending .timeline-title {
+        color: #666;
+      }
+      .timeline-item.processing .timeline-title {
+        color: #bb2749;
+      }
+      .timeline-item.order-completed .timeline-title {
+        color: #333 !important;
+      }
+      .timeline-time {
+        color: #6c757d;
+        font-size: 14px;
+      }
+      .timeline-item.pending .timeline-time {
+        color: #999;
+      }
+      .timeline-item.processing .timeline-time {
+        color: #bb2749;
+      }
+      .timeline-item.order-completed .timeline-time {
+        color: #333 !important;
+      }
+      .timeline-item.event {
+        background: #efefef;
+        border-left: 4px solid #ccc;
+      }
+      .timeline-item.event .timeline-step {
+        background: #ccc;
+      }
+  body
+    .container
+      img.logo(src="./images/logo.png", alt="TailorMed")
+      
+      form#trackingForm
+        .form-group
+          label(for="orderNo") Job No.
+          input#orderNo(type="text", name="orderNo", placeholder="e.g., TM111682", required)
+        
+        .form-group
+          label(for="trackingNo") Tracking No.
+          input#trackingNo(type="text", name="trackingNo", placeholder="e.g., GEXVC2YF", required)
+        
+        button#submitBtn(type="submit") STATUS CHECK
+      
+      #result.result
+        #resultContent
+    script(src="./js/apiMonitor.js")
+    script.
+      const form = document.getElementById('trackingForm');
+      const result = document.getElementById('result');
+      const resultContent = document.getElementById('resultContent');
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Read API Key from URL (if provided)
+      const urlParams = new URLSearchParams(window.location.search);
+      const apiKey = urlParams.get('apiKey');
+      
+      if (apiKey) {
+        console.log('✅ API Key detected - Enhanced rate limit active');
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const orderNo = document.getElementById('orderNo').value.trim().toUpperCase();
+        const trackingNo = document.getElementById('trackingNo').value.trim().toUpperCase();
+        
+        if (!orderNo || !trackingNo) {
+          showError('Please enter both Job No. and Tracking No.');
+          return;
+        }
+        
+        await fetchTrackingData(orderNo, trackingNo);
+      });
+
+      async function fetchTrackingData(orderNo, trackingNo) {
+        showLoading('Checking shipment status, please wait...');
+        
+        try {
+          // 檢測環境：如果是 localhost 使用本地 API 服務器，否則使用 Netlify Function
+          const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          const apiBaseUrl = isLocalhost ? 'http://localhost:3001/api' : '/api';
+          
+          // Build API URL, append API Key if available
+          let apiUrl = `${apiBaseUrl}/tracking?orderNo=${encodeURIComponent(orderNo)}&trackingNo=${encodeURIComponent(trackingNo)}`;
+          if (apiKey) {
+            apiUrl += `&apiKey=${encodeURIComponent(apiKey)}`;
+          }
+          
+          console.log('🔍 API URL:', apiUrl);
+          
+          // 添加超時設置（30秒）
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000);
+          
+          try {
+            const response = await fetch(apiUrl, {
+              signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+              if (response.status === 404) {
+                showError('No record found. Please verify the tracking number.');
+                return;
+              }
+              if (response.status === 429) {
+                const errorData = await response.json();
+                showError(errorData.message || 'Query limit reached (10 per hour). Please try again later.');
+                return;
+              }
+              throw new Error(`Network response was not ok: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('✅ API 回應成功:', data.success);
+            
+            if (data.success && data.data) {
+              showSuccess(data.data);
+            } else {
+              showError('Query failed. Please try again later.');
+            }
+          } catch (fetchError) {
+            clearTimeout(timeoutId);
+            if (fetchError.name === 'AbortError') {
+              console.error('⏱️ 請求超時');
+              showError('Request timeout. Please try again.');
+            } else {
+              throw fetchError;
+            }
+          }
+          
+        } catch (error) {
+          console.error('❌ Query error:', error);
+          showError('Service temporarily unavailable. Please try again later or contact support.');
+        }
+      }
+
+      function showLoading(message) {
+        result.className = 'result loading';
+        resultContent.innerHTML = `<p>${message}</p>`;
+        result.style.display = 'block';
+        submitBtn.disabled = true;
+      }
+
+      function showError(message) {
+        result.className = 'result error';
+        resultContent.innerHTML = `<p>${message}</p>`;
+        result.style.display = 'block';
+        submitBtn.disabled = false;
+      }
+
+      // 格式化 Last Update 為台灣時間（格式：M/D/YYYY HH:MM）
+      function formatLastUpdate(lastUpdate) {
+        if (!lastUpdate) return '—';
+        
+        try {
+          const date = new Date(lastUpdate);
+          if (isNaN(date.getTime())) return lastUpdate; // 如果不是有效日期，返回原值
+          
+          // 使用 Intl.DateTimeFormat 格式化為台灣時區（UTC+8）
+          const formatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Taipei',
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          });
+          
+          const parts = formatter.formatToParts(date);
+          const month = parts.find(p => p.type === 'month').value;
+          const day = parts.find(p => p.type === 'day').value;
+          const year = parts.find(p => p.type === 'year').value;
+          const hours = parts.find(p => p.type === 'hour').value;
+          const minutes = parts.find(p => p.type === 'minute').value;
+          
+          return `${month}/${day}/${year} ${hours}:${minutes}`;
+        } catch (e) {
+          return lastUpdate; // 如果解析失敗，返回原值
+        }
+      }
+
+      function showSuccess(shipmentData) {
+        result.className = 'result success';
+        
+        let timelineHtml = '';
+        if (shipmentData.timeline && shipmentData.timeline.length > 0) {
+          timelineHtml = '<div class="timeline"><h3>TIMELINE</h3>';
+          
+          // Basic version 只顯示 4 個基本步驟（排除事件）
+          // 按照用戶指定的順序：Order Created, Shipment Collected, In Transit, Shipment Delivered
+          const basicSteps = [
+            'Order Created',
+            'Shipment Collected',
+            'In Transit',
+            'Shipment Delivered'
+          ];
+          
+          // Filter and show only basic steps (排除事件)
+          let stepCounter = 1;
+          const filteredItems = [];
+          
+          shipmentData.timeline.forEach(item => {
+            // 排除事件（isEvent）
+            if (item.isEvent) {
+              return; // Skip events
+            }
+            
+            // 檢查是否為基本步驟
+            const itemTitleLower = item.title.toLowerCase().trim();
+            const isBasicStep = basicSteps.some(step => {
+              const stepLower = step.toLowerCase().trim();
+              return itemTitleLower === stepLower || 
+                     itemTitleLower.includes(stepLower) ||
+                     stepLower.includes(itemTitleLower.replace(/\s+/g, ''));
+            });
+            
+            if (isBasicStep) {
+              filteredItems.push({
+                ...item,
+                newStepNumber: stepCounter++
+              });
+            }
+          });
+          
+          // 如果沒有過濾到任何項目，顯示所有非事件的項目（除錯用）
+          if (filteredItems.length === 0 && shipmentData.timeline.length > 0) {
+            console.log('⚠️ 沒有匹配到基本步驟，顯示所有非事件 timeline 項目:', shipmentData.timeline.map(i => i.title));
+            shipmentData.timeline.forEach(item => {
+              if (!item.isEvent) {
+                filteredItems.push({
+                  ...item,
+                  newStepNumber: stepCounter++
+                });
+              }
+            });
+          }
+          
+          // 保持 API 返回的順序（按照用戶指定的順序），不重新排序
+          // 不需要排序，直接使用從 API 返回的順序
+          
+          // Display renumbered steps
+          filteredItems.forEach(item => {
+            const stepClass = item.status;
+            const stepDisplay = item.newStepNumber; // Use new numbering 1-6
+            
+            // 格式化日期時間顯示
+            // 如果沒有日期時間，顯示 "Pending..."
+            let dateTimeDisplay = '';
+            // 檢查 date 和 time 是否存在且不為空字串
+            const hasDate = item.date && item.date.trim() !== '';
+            const hasTime = item.time && item.time.trim() !== '';
+            
+            if (hasDate && hasTime) {
+              // 格式化日期：YYYY-MM-DD → YYYY/MM/DD
+              const formattedDate = item.date.replace(/-/g, '/');
+              dateTimeDisplay = `${formattedDate} ${item.time}`;
+            } else if (hasDate) {
+              dateTimeDisplay = item.date.replace(/-/g, '/');
+            } else if (hasTime) {
+              dateTimeDisplay = item.time;
+            } else {
+              // 如果是處理中狀態，顯示 "Processing..."；否則顯示 "Pending..."
+              dateTimeDisplay = item.status === 'processing' ? 'Processing...' : 'Pending...';
+            }
+            
+            // 檢查是否為訂單完成狀態
+            const isOrderCompleted = item.isOrderCompleted === true;
+            // 根據狀態決定樣式：processing 使用 processing 樣式，pending 使用灰階樣式，訂單完成使用特殊樣式
+            const stepClassForStatus = item.status === 'processing' ? 'processing' : 
+                                      (item.status === 'pending' ? 'pending' : 
+                                      (isOrderCompleted ? 'completed order-completed' : stepClass));
+            const stepColorClass = item.status === 'processing' ? 'processing' : 
+                                  (item.status === 'pending' ? 'pending' : 
+                                  (isOrderCompleted ? 'completed order-completed' : item.status));
+            const itemClass = isOrderCompleted ? 'order-completed' : 
+                             (item.status === 'processing' ? 'processing' : 
+                              item.status === 'pending' ? 'pending' : '');
+            
+            timelineHtml += `
+              <div class="timeline-item ${itemClass} ${stepClassForStatus}">
+                <div class="timeline-step ${stepColorClass}">${stepDisplay}</div>
+                <div class="timeline-content">
+                  <div class="timeline-title">${item.title}</div>
+                  <div class="timeline-time">${dateTimeDisplay}</div>
+                </div>
+              </div>
+            `;
+          });
+          timelineHtml += '</div>';
+        }
+        
+        // 找出 timeline 中狀態為 processing 的前一個步驟標題，用於顯示 Status
+        let statusDisplay = shipmentData.status || '—';
+        if (shipmentData.timeline && shipmentData.timeline.length > 0) {
+          const processingIndex = shipmentData.timeline.findIndex(item => item.status === 'processing');
+          if (processingIndex >= 0 && processingIndex > 0) {
+            // 找到 processing 的前一個步驟（排除事件）
+            for (let i = processingIndex - 1; i >= 0; i--) {
+              if (!shipmentData.timeline[i].isEvent) {
+                statusDisplay = shipmentData.timeline[i].title;
+                break;
+              }
+            }
+          }
+        }
+        
+        resultContent.innerHTML = `
+          <h3>SUCCESS</h3>
+          <div class="shipment-info">
+            <div class="info-row">
+              <span class="info-label">Job No.</span>
+              <span class="info-value">${shipmentData.orderNo || '—'}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Tracking No.</span>
+              <span class="info-value">${shipmentData.trackingNo || '—'}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Invoice No.</span>
+              <span class="info-value">${shipmentData.invoiceNo || '—'}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">ETA</span>
+              <span class="info-value">${shipmentData.eta || '—'}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Status</span>
+              <span class="info-value">${statusDisplay}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Update</span>
+              <span class="info-value">${formatLastUpdate(shipmentData.lastUpdate)}</span>
+            </div>
+          </div>
+          ${timelineHtml}
+        `;
+        
+        result.style.display = 'block';
+        submitBtn.disabled = false;
+      }
+
+      // Auto-fill test data
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('orderNo').value = 'TM111695';
+        document.getElementById('trackingNo').value = 'X73K1UN6';
+      });
+
